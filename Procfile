@@ -1,1 +1,1 @@
-web: streamlit run pomo.py
+web: streamlit run --server.port 8080 pomo.py

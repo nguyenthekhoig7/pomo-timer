@@ -25,8 +25,11 @@ class TimerApp:
         self.remaining_time = 0
 
     def convert_time_str_to_seconds(self, time_str): # mm:ss --> ss
-        minutes, seconds = map(int, time_str.split(":"))
-        total_seconds = minutes * 60 + seconds
+        if ':' in time_str:
+            minutes, seconds = map(int, time_str.split(":"))
+            total_seconds = minutes * 60 + seconds
+        else:
+            total_seconds = int(time_str)
         return total_seconds
 
     def start_timer(self):
