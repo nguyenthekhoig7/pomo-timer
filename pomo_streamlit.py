@@ -2,29 +2,51 @@ import streamlit as st
 import datetime
 import time
 
-def count_down(time_amount, message_placeholder):
+st.title('Pomodoro timer')
+
+cols = st.columns(2)
+with cols[0]:
+    input_min = st.number_input(':one: Set minutes ', min_value=0)
+with cols[1]:
+    input_sec = st.number_input(':two: Set seconds', min_value=0, max_value=59)
+time_input = datetime.time(0, input_min, input_sec)
+
+cols = st.columns(3)
+with cols[1]:
+    start_bttn = st.button('Start!')
+st.text("")
+st.text("")
+message_placeholder = st.empty()
+
+
+def count_down(time_amount, message_placeholder=message_placeholder):
+    cols = st.columns(3)
+    with cols[1]:
+        reset_bttn = st.button('Reset')
     ss = (time_amount.hour * 60 + time_amount.minute) * 60 + time_amount.second
-    # stop_bttn = st.button('Stop')
-    # reset_bttn = st.button('Reset')
     while ss > 0:
-        message_placeholder.write(f"Time left: {ss}s")
+        message_placeholder.markdown(f":alarm_clock: Time left: {ss}s")
         time.sleep(1)
         ss -= 1
+        if reset_bttn:
+            st.write('Cancelling')
+            st.experimental_rerun()
+    message_placeholder.write('<b style="font-size:26px; color:Green;">Time\'s up!!!</b>',
+unsafe_allow_html=True)
+    play_notif_sound()
 
-        # if stop_bttn:
-        #     message_placeholder.write(f"Time left: {ss}s")
-        #     break
-        # if reset_bttn:
-        #     stop_count_down()
-        #     break
+def play_notif_sound(sound_path = "https://www.orangefreesounds.com/wp-content/uploads/2022/04/Small-bell-ringing-short-sound-effect.mp3"): 
+    html_string = f"""
+                <audio controls autoplay>
+                <source src="{sound_path}" type="audio/mp3" type="audio/mp3">
+                </audio>
+                """
 
-# def stop_count_down():
-#     st.write("Input time then click 'Start!'")
+    sound = st.empty()
+    sound.markdown(html_string, unsafe_allow_html=True)  # will display a st.audio with the sound you specified in the "src" of the html_string and autoplay it
+    time.sleep(1.5)  # wait for 2 seconds to finish the playing of the audio
+    sound.empty()  # optionally delete the element afterwards
 
-st.title('Pomodoro timer')
-time_input = st.time_input('Set a timer for', datetime.time(0, 1))
-start_bttn = st.button('Start!')
-message_placeholder = st.empty()
 if start_bttn:
-    count_down(time_input, message_placeholder)
+    count_down(time_input)
 
