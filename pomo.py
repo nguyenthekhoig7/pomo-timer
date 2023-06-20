@@ -1,6 +1,5 @@
 import tkinter as tk
 import time
-import threading
 import pygame
 
 class TimerApp:
