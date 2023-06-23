@@ -71,7 +71,7 @@ class TimerApp():
 
         ss = (time_to_count.hour * 60 + time_to_count.minute) * 60 + time_to_count.second
         while ss > 0:
-            self.message_placeholder.markdown(f":alarm_clock: Time left: {ss}s")
+            self.message_placeholder.markdown(f":alarm_clock: Counting down {time_to_count} -- Time left: **%02d:%02d**"%(ss/60, ss%60))
             time.sleep(1)
             ss -= 1
             if reset_bttn:
